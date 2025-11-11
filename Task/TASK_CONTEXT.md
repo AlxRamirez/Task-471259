@@ -5,7 +5,7 @@
 
 | Campo | Valor |
 |-------|-------|
-| Sprint | 6 · Reliability Page Development |
+| Sprint | 7 · Reliability Page Development |
 | Status | ✅ Completado (frontend + backend) |
 | Objetivo | Activar la acción **Archive** para las filas seleccionadas en el grid de Reliability, apoyándose en el endpoint existente. |
 
