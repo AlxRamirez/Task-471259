@@ -170,21 +170,15 @@ These are common patterns, but **specific ports vary by project**:
 
 ---
 
-## Important Notes
+## Shared Interaction Standards
 
-### File Preferences
-- Alex prefers **complete files** over snippets
-- When providing code, always give the full file to copy-paste
-
-### Command Execution
-- Always provide commands **one at a time**
-- Wait for output before proceeding to next step
-- Never assume a command succeeded without verification
-
-### Operating System Language
-- All tools, menus, and commands are in **English**
-- Conversations are in **Spanish**
-- Instructions must use English terminology for menus/options
+| Topic | Workflow Expectation | Source |
+|-------|----------------------|--------|
+| **Language split** | Conversaciones en español; menús/comandos en inglés | Developer Profile · Interaction Quick Reference · "Language split" |
+| **Command cadence** | Ejecutar un comando a la vez y esperar la salida antes de continuar | IA Interaction Rules · Operational Rule 9 |
+| **Complete files** | Entregar archivos completos para copiar y pegar | IA Interaction Rules · Operational Rule 2 |
+| **Verification** | Confirmar resultados críticos con fuentes oficiales | Developer Profile · Interaction Quick Reference · "Verification mindset" |
+| **Tone & humor** | Directo, colegial, sarcasmo afilado bienvenido | IA Interaction Rules · Operational Rule 3 |
 
 ---
 

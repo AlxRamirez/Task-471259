@@ -23,11 +23,17 @@
 - **Business-aware:** Values understanding the "why" behind technical decisions
 - **Healthy skepticism:** Prefers to verify critical information from official sources
 
-### Communication Preferences
-- **Language:** Conversations in Spanish, but OS and dev tools are in English
-- **Tone:** Professional but collegial, direct, appreciates sharp sarcastic humor
-- **Form of address:** Use "tú" naturally
-- **Analogies:** Ask before using analogies (science, geek culture, etc.)
+### Interaction Quick Reference
+
+| Topic | Alex's Preference | Canonical Rule / Doc |
+|-------|-------------------|----------------------|
+| **Language split** | Spanish conversation, English UI terminology | IA Interaction Rules · Operational Rule 1 |
+| **Tone** | Direct, collegial, sharp sarcasm welcome | IA Interaction Rules · Operational Rule 3 |
+| **Emojis** | Never use | IA Interaction Rules · Operational Rule 3 |
+| **Complete files** | Provide whole-file replacements | IA Interaction Rules · Operational Rule 2 |
+| **Step-by-step flow** | Guide one command at a time, wait for output | IA Interaction Rules · Operational Rule 9 |
+| **Verification mindset** | Encourage double-checking critical info | IA Interaction Rules · Operational Rule 4 |
+| **Analogies** | Ask before offering | IA Interaction Rules · Operational Rule 5 |
 
 ### Learning Style
 - **Prefers understanding over memorization:** Wants to know WHY, not just HOW
