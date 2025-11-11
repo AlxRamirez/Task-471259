@@ -1,34 +1,65 @@
 # Task 471259 · Archive Action (Frontend)
 
-## Snapshot
-- **Sprint:** 6 · Reliability Page Development
-- **Status:** ✅ Completed (Frontend + Backend)
-- **Primary Goal:** Activar la acción **Archive** para filas seleccionadas en la tabla de tareas de Reliability, consumiendo el endpoint existente de backend.
+<details open>
+<summary><strong>Resumen</strong></summary>
 
-## Key Outcomes
-1. **Grid Modernization:** Sustitución de la tabla estática por `@progress/kendo-react-grid` con soporte para selección múltiple.
-2. **User Flow Control:** Botón **Archive** habilitado/deshabilitado según selección y recuento visible.
-3. **UX Safeguards:** Diálogo de confirmación previo, manejo de carga y notificaciones de éxito/error.
-4. **State + Auth Utilities:** Gestión local (`useState`) de selección/carga y helper `getUserEmailFromToken()` para obtener el email del JWT.
-5. **API Bridge:** Servicio `archiveTasks()` + `fetchTasksByProject()` encapsulan llamadas a `PUT /api/tasks/archive` y `GET /api/tasks/tasksbyproject`, filtrando tareas archivadas en la carga inicial.
+| Campo | Valor |
+|-------|-------|
+| Sprint | 6 · Reliability Page Development |
+| Status | ✅ Completado (frontend + backend) |
+| Objetivo | Activar la acción **Archive** para las filas seleccionadas en el grid de Reliability, apoyándose en el endpoint existente. |
 
-## Source References
-- Frontend container y UI principal: [`src/mfg-asset-strategy-ui/src/components/reliability/Reliability.tsx`](../src/mfg-asset-strategy-ui/src/components/reliability/Reliability.tsx)
-- Estilos específicos del grid: [`src/mfg-asset-strategy-ui/src/components/reliability/Reliability.css`](../src/mfg-asset-strategy-ui/src/components/reliability/Reliability.css)
-- Servicio de tareas: [`src/mfg-asset-strategy-ui/src/services/taskService.ts`](../src/mfg-asset-strategy-ui/src/services/taskService.ts)
-- Utilidad JWT: [`src/mfg-asset-strategy-ui/src/utils/jwtUtils.ts`](../src/mfg-asset-strategy-ui/src/utils/jwtUtils.ts)
-- Tipos compartidos: [`src/mfg-asset-strategy-ui/types/tasks.types.ts`](../src/mfg-asset-strategy-ui/types/tasks.types.ts)
+**Resultados clave**
 
-> Para detalles completos de UI/UX, consulta el diseño en `docs/reliability/Archive-Flow.md` (wiki interno).
+1. Grid modernizado con `@progress/kendo-react-grid` y selección múltiple.
+2. Botón **Archive** habilitado por selección + contador visible.
+3. Diálogo de confirmación, estados de carga y toasts de éxito/error.
+4. `useState` para selección/carga y `getUserEmailFromToken()` para firmar solicitudes.
+5. Servicios `archiveTasks()` y `fetchTasksByProject()` consumen `PUT /api/tasks/archive` y `GET /api/tasks/tasksbyproject`, filtrando archivados.
 
-## Backend Dependency
-- **Task relacionada:** 478150 (Backend).
-- **Endpoint:** `PUT /api/tasks/archive` refactorizado a LINQ; dependencia crítica para finalizar la acción.
-- **Cobertura adicional:** `GET /api/tasks/tasksbyproject` sirve como fuente de datos.
+**Archivos fuente**
 
-## Deployment & Follow-up
-- Ramas publicadas: `feature/471259-archive-tasks-ui` (frontend) y `feature/478150-api-task-table` (backend).
-- Próximo paso documentado: fusionar ambas en rama de pruebas `*-final-test` para validación E2E.
-- Estado final: listo para QA automatizado (Richard).
+| Pieza | Ruta |
+|-------|------|
+| Contenedor UI | `src/mfg-asset-strategy-ui/src/components/reliability/Reliability.tsx` |
+| Estilos grid | `src/mfg-asset-strategy-ui/src/components/reliability/Reliability.css` |
+| Servicio tareas | `src/mfg-asset-strategy-ui/src/services/taskService.ts` |
+| Utilidad JWT | `src/mfg-asset-strategy-ui/src/utils/jwtUtils.ts` |
+| Tipos | `src/mfg-asset-strategy-ui/types/tasks.types.ts` |
 
-**Actualizado:** 2025-11-10 · Referencia histórica consolidada en una página.
+> Detalle UX adicional en `docs/reliability/Archive-Flow.md` (wiki interno).
+
+</details>
+
+<details>
+<summary><strong>API</strong></summary>
+
+| Endpoint | Método | Uso | Payload principal | Respuesta |
+|----------|--------|-----|------------------|-----------|
+| `/api/tasks/tasksbyproject` | GET | Carga inicial de tareas activas | `projectId` obligatorio (`pageNumber`/`pageSize` opcional) | `tasks` paginadas + `totalCount` |
+| `/api/tasks/archive` | PUT | Archivado masivo desde el grid | `taskIds[]`, `email` del usuario | `{ success, tasksAffected, message }` |
+
+**Requisitos de solicitud**
+- Header `Authorization: Bearer {id_token}` gestionado por `makeAuthenticatedRequest()`.
+- `Content-Type: application/json`.
+- Errores comunes: `400` (datos faltantes), `401` (token inválido), `404` (IDs inexistentes), `500` (fallos generales).
+
+**Dependencias backend**
+- Task relacionada: 478150.
+- Refactor LINQ en `PUT /api/tasks/archive` + datos de `GET /api/tasks/tasksbyproject`.
+
+</details>
+
+<details>
+<summary><strong>Checklist</strong></summary>
+
+- Confirmar `id_token` antes de disparar `archiveTasks`.
+- Mostrar `tasksAffected` en la notificación de éxito.
+- Manejar `response.ok` falso con messaging amigable y logging.
+- Mantener selección coherente tras refrescar datos del grid.
+- Fusionar ramas `feature/471259-archive-tasks-ui` y `feature/478150-api-task-table` en rama de pruebas `*-final-test` previo a QA (Richard).
+
+</details>
+
+**Actualizado:** 2025-11-10 · Referencia consolidada en una tarjeta.
+

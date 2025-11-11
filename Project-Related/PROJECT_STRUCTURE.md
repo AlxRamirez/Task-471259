@@ -12,42 +12,34 @@ mfg-asset-strategy/
 ```
 
 ## Backend (`src/mfg-asset-strategy-api/`)
-- `MFG.ASAP.Data/`
-  - `Entities/` · Modelos EF Core
-  - `Repositories/` · Acceso a datos (`Project/`, `Task/`, ...)
-  - `ResponseObjects/` · DTOs de salida
-  - `AsapDbContext.cs`
-- `MFG.ASAP.Logic/Services/` · Capa de negocio
-- `MFG.ASAP.WebApi/`
-  - `Controllers/` (`TaskController.cs`, etc.)
-  - `RequestModels/`, `Extensions/`, `Startup.cs`
-- Tests: `MFG.ASAP.Logic.UnitTests/`, `MFG.ASAP.Logic.IntegrationTests/`, `MFG.ASAP.WebApi.IntegrationTests/`
 
-✅ **Checklist backend**
-- [ ] Nuevas entidades en `Entities/` + migración Flyway correspondiente.
-- [ ] Lógica en `Services/` y acceso a datos en `Repositories/`.
-- [ ] Exponer endpoints vía `Controllers/` + DTO en `RequestModels/` o `ResponseObjects/`.
+| Directorio | Contenido clave | Nota rápida |
+|------------|-----------------|-------------|
+| `MFG.ASAP.Data/Entities/` | Modelos EF Core | Generan migraciones Flyway |
+| `MFG.ASAP.Data/Repositories/` | Acceso a datos (`Project/`, `Task/`, …) | Mantener interfaces coherentes |
+| `MFG.ASAP.Data/ResponseObjects/` | DTOs de salida | Usa naming consistente con Swagger |
+| `MFG.ASAP.Logic/Services/` | Capa de negocio | Contiene orquestación principal |
+| `MFG.ASAP.WebApi/Controllers/` | Endpoints (`TaskController.cs`, etc.) | Complementar con `RequestModels/` |
+| Tests (`MFG.ASAP.Logic.*Tests/`) | Unit e integration tests | Revisa checklist maestro para cobertura |
 
 ## Frontend (`src/mfg-asset-strategy-ui/`)
-- `src/components/`
-  - `reliability/` (`Reliability.tsx`, `.css`)
-  - `dashboard/`, `reusable/`, etc.
-- `features/` · utilidades (auth/roles)
-- `types/` · definiciones TypeScript (`tasks.types.ts`, `taskstatus.enum.ts`)
-- `utils/` · helpers (`api.ts`, `jwtUtils.ts`)
-- `environments/` · `.env` por entorno
-- Raíz: `App.tsx`, `index.tsx`, `styles.css`
 
-✅ **Checklist frontend**
-- [ ] Componentes bajo `components/<feature>/` + CSS homónimo.
-- [ ] Tipos nuevos en `types/` (`<entity>.types.ts`).
-- [ ] Helpers compartidos en `utils/`; reutiliza `makeAuthenticatedRequest`.
-- [ ] Usa alias de `tsconfig.json` (`@/*`, `@features/*`, `types/*`).
+| Directorio | Uso | Nota rápida |
+|------------|-----|-------------|
+| `src/components/` | Componentes UI (`reliability/`, `dashboard/`, etc.) | CSS gemelo por carpeta |
+| `src/features/` | Utilidades y lógica transversal (auth/roles) | Evita duplicar hooks |
+| `src/types/` | Tipos (`tasks.types.ts`, `taskstatus.enum.ts`) | Mantén enums en archivos dedicados |
+| `src/utils/` | Helpers (`api.ts`, `jwtUtils.ts`) | Centraliza llamadas HTTP |
+| `environments/` | Archivos `.env` por entorno | Sin credenciales en Git |
+| Raíz (`App.tsx`, `index.tsx`) | Bootstrap de la app | Verifica rutas al actualizar |
 
 ## Naming Reminders
 - Backend: PascalCase; interfaces `IExample`; pruebas terminan en `Tests`.
 - Frontend: Componentes PascalCase, enums `*.enum.ts`, tipos `*.types.ts`, utilidades camelCase.
 
+> Checklist de entrega consolidado en `Project-Related/TECH_STACK.md` · sección "Delivery Checklist".
+
 > Para mapas completos de carpetas revisa `docs/architecture/structure.md` o el wiki del proyecto.
 
 **Actualizado:** 2025-11-07 · Mantén esta guía junto al IDE.
+
