@@ -5,252 +5,68 @@
 - **Task ID:** 471259
 - **Sprint:** Sprint 6 - Reliability Page Development
 - **Type:** Feature - Frontend Implementation
-- **Priority:** High
-- **Assigned To:** Alex
+- **Status:** COMPLETED
 
 ---
 
 ## Objective
 
-Implement the **Archive** functionality for selected tasks in the Tasks table on the Reliability page.
+Implementar la funcionalidad **Archive** para las tareas seleccionadas en la tabla de Tareas de la página de Reliability, integrándola con el endpoint de backend correspondiente.
 
 ---
 
-## Current State
+## Summary of Implementation
 
-### Reliability Page (Existing)
-- **Location:** `src/components/reliability/Reliability.tsx`
-- **Status:** Already exists with basic structure
-- **Features:**
-  - 4 tabs: Tasks, Plans, Platform, Load to System
-  - 3 cascading dropdowns: System → Facility → Project
-  - Basic HTML table for tasks (NOT Kendo Grid yet)
-  - Mock data in local state (NOT loading from backend yet)
+La implementación se completó exitosamente, logrando todos los requisitos funcionales:
 
-### Current Tasks Table (HTML)
-```tsx
-<table className="table">
-  <thead>
-    <tr>
-      <th>Task Name</th>
-      <th>Task Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {tasks.map((task) => (
-      <tr key={task.taskId}>
-        <td>{task.taskName}</td>
-        <td>
-          <span className={`badge ${task.status === TaskStatus.APPROVED ? "badge-completed" : ...}`}>
-            {task.status}
-          </span>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-```
+1.  **Kendo Grid Implementation:** Se reemplazó la tabla HTML estática por un componente `@progress/kendo-react-grid`.
+2.  **Checkbox Selection:** Se habilitó la selección de múltiples filas (tasks) mediante checkboxes.
+3.  **State Management:** Se utiliza `useState` para rastrear las tareas seleccionadas (`selectedTaskIds`), el estado de carga (`isLoading`), y los diálogos de confirmación/error.
+4.  **Archive Button:** Se añadió un botón "Archive" que se activa dinámicamente y muestra el recuento de tareas seleccionadas.
+5.  **Confirmation Dialog:** Se implementó un diálogo de confirmación modal antes de ejecutar la acción de archivado.
+6.  **API Integration:** Se creó un servicio (`taskService.ts`) que llama al endpoint `PUT /api/tasks/archive`.
+7.  **User Email Extraction:** Se implementó una utilidad (`jwtUtils.ts`) para decodificar el `id_token` desde `localStorage` y extraer el email del usuario, requerido por la API.
+8.  **Loading/Error Handling:** Se manejan los estados de carga (mostrando un spinner) y se muestran notificaciones de éxito o error tras la llamada a la API.
+9.  **Task Visibility:** La lógica de carga de tareas (`fetchTasksByProject`) filtra localmente las tareas con estado "ARCHIVED", mostrando solo "APPROVED" y "PENDING".
 
 ---
 
-## Functional Requirements
+## Solution Artifacts (Files Created/Modified)
 
-### Must Have (Core Functionality)
+Estos son los archivos clave que se crearon o modificaron para esta tarea. (El contenido completo de estos archivos no se almacena en este repositorio de contexto para optimizar).
 
-1. **Replace HTML Table with Kendo Grid**
-   - Use `@progress/kendo-react-grid` component
-   - Maintain current visual styling
-   - Add columns as needed
-
-2. **Checkbox Selection**
-   - Enable multi-row selection via checkboxes
-   - Track selected tasks in state
-   - Display count of selected tasks
-
-3. **Archive Button**
-   - Visible only when tasks are selected
-   - Disabled when no tasks selected
-   - Shows count: "Archive (3 tasks)"
-
-4. **Confirmation Dialog**
-   - Display before archiving
-   - Show list of selected task names
-   - "Cancel" and "Confirm" buttons
-
-5. **API Integration**
-   - Call PUT `/api/tasks/archive` endpoint
-   - Pass selected task IDs and user email
-   - Handle success and error responses
-
-6. **Loading State**
-   - Show spinner/loading indicator during API call
-   - Disable UI interactions while loading
-
-7. **Success Handling**
-   - Show success message: "X task(s) archived successfully"
-   - Automatically refresh tasks table (remove archived tasks)
-   - Clear selection state
-
-8. **Error Handling**
-   - Show error message if API call fails
-   - Maintain selection state on error
-   - Allow user to retry
-
-9. **Task Visibility**
-   - Display only tasks with status: APPROVED or PENDING
-   - Filter out ARCHIVED tasks from the view
+-   **`src/components/reliability/Reliability.tsx`**
+    -   Contiene la lógica principal del Kendo Grid, la gestión del estado de selección, los diálogos y los manejadores de eventos.
+-   **`src/components/reliability/Reliability.css`**
+    -   Estilos actualizados para el Kendo Grid y los componentes de la UI.
+-   **`types/tasks.types.ts`**
+    -   Actualizado con las interfaces `ArchiveResponse` y `TasksByProjectResponse`.
+-   **`src/services/taskService.ts`** (Archivo nuevo)
+    -   Contiene las funciones `fetchTasksByProject` y `archiveTasks` que encapsulan la lógica de la API.
+-   **`src/utils/jwtUtils.ts`** (Archivo nuevo)
+    -   Contiene la función `getUserEmailFromToken` para la extracción de email del JWT.
 
 ---
 
-## User Flow
+## Related Backend Task (Task 478150)
 
-1. User selects System, Facility, and Project from dropdowns
-2. Tasks table loads (GET `/api/tasks/tasksbyproject`)
-3. User selects one or more tasks via checkboxes
-4. "Archive" button appears/enables
-5. User clicks "Archive" button
-6. Confirmation dialog appears showing selected tasks
-7. User clicks "Confirm"
-8. Loading state activates
-9. API call executes (PUT `/api/tasks/archive`)
-10. On success:
-    - Success message displays
-    - Table refreshes (archived tasks disappear)
-    - Selection clears
-11. On error:
-    - Error message displays
-    - Selection remains
-    - User can retry
+La funcionalidad de frontend depende de la **Task 478150 (Backend)**, que también se completó.
+
+-   **Endpoint:** `PUT /api/tasks/archive`.
+-   **Refactor:** Los endpoints `ArchiveTasksAsync` y `UnlinkTasksAsync` en el backend fueron refactorizados de Raw SQL a LINQ para mejorar la mantenibilidad.
+-   **Excepción:** `CopyTasksAsync` se mantuvo con Raw SQL debido a la complejidad de la lógica de negocio, y se documentó con un `TODO` para futura revisión.
 
 ---
 
-## Edge Cases to Handle
+## Final Status
 
-### No Selection
-- Archive button should be disabled
-- Should not be possible to trigger archive action
-
-### Network Error
-- Display user-friendly error message
-- Keep tasks selected so user can retry
-- Log error to console for debugging
-
-### Partial Success (if backend supports)
-- Show message: "X of Y tasks archived successfully"
-- Refresh table to show current state
-- Display which tasks failed (if info available)
-
-### User Email Missing
-- Backend requires email for archive operation
-- Frontend must extract email from JWT token in localStorage
-- Handle case where token is invalid/missing
-
-### Empty Tasks List
-- Display message: "No tasks available"
-- Archive button should not be visible
+-   La funcionalidad "Archive" está completa (Frontend y Backend).
+-   La rama `feature/471259-archive-tasks-ui` se ha subido al servidor (origin) para que el equipo de QA (Richard) pueda comenzar las pruebas de automatización.
+-   La rama `feature/478150-api-task-table` (backend) también se ha subido al servidor.
+-   El siguiente paso (planificado) es crear una rama de prueba (`...final-test`) fusionando ambas ramas para la validación E2E.
 
 ---
 
-## Implementation Notes
-
-### Task Loading from Backend
-- Currently tasks are mocked in local state
-- Must implement: `fetchTasksByProject(projectId)` in a service file
-- Use the existing GET `/api/tasks/tasksbyproject` endpoint
-- Transform API response to match frontend `Task` interface
-
-### User Email Extraction
-- JWT token is stored in localStorage as `id_token`
-- Need to decode JWT to extract email claim
-- Consider creating a utility function: `getUserEmailFromToken()`
-
-### State Management
-- `useState` for selected tasks (array of task IDs)
-- `useState` for loading state (boolean)
-- `useState` for error/success messages (string or null)
-- No external state management library
-
-### Kendo Grid Configuration
-- Enable selection: `selectedField` pattern
-- Define columns: Task Name, Status, other fields as needed
-- Apply existing CSS styling to match current design
-
----
-
-## Files to Create/Modify
-
-### Files to Modify
-1. **`src/components/reliability/Reliability.tsx`**
-   - Replace HTML table with Kendo Grid
-   - Add selection state management
-   - Add Archive button and dialog
-   - Integrate with archive API
-
-2. **`src/components/reliability/Reliability.css`**
-   - Update styles for Kendo Grid
-   - Add styles for Archive button
-   - Add styles for confirmation dialog
-
-3. **`types/tasks.types.ts`**
-   - Expand Task interface with additional fields from API
-   - Add request/response types for archive operation
-
-### Files to Create
-1. **`src/services/taskService.ts`** (or similar)
-   - `fetchTasksByProject(projectId): Promise<Task[]>`
-   - `archiveTasks(taskIds: number[], email: string): Promise<ArchiveResponse>`
-
-2. **`src/utils/jwtUtils.ts`** (optional but recommended)
-   - `getUserEmailFromToken(): string | null`
-   - Helper to decode and extract claims from JWT
-
----
-
-## Testing Checklist
-
-- [ ] Table loads tasks correctly from API
-- [ ] Tasks with ARCHIVED status are filtered out
-- [ ] Checkbox selection works for single task
-- [ ] Checkbox selection works for multiple tasks
-- [ ] Archive button appears when tasks selected
-- [ ] Archive button shows correct count
-- [ ] Archive button disabled when no selection
-- [ ] Confirmation dialog shows selected tasks
-- [ ] Cancel button in dialog works (closes dialog, maintains selection)
-- [ ] Confirm button triggers API call
-- [ ] Loading state displays during API call
-- [ ] Success: Tasks disappear from table
-- [ ] Success: Success message displays
-- [ ] Success: Selection clears
-- [ ] Error: Error message displays
-- [ ] Error: Selection maintained
-- [ ] Error: User can retry
-- [ ] Invalid email: Appropriate error handling
-
----
-
-## Success Criteria
-
-The task is complete when:
-1. User can select multiple tasks via Kendo Grid checkboxes
-2. Archive button appears and functions correctly
-3. Confirmation dialog prevents accidental archives
-4. API integration works (tasks are archived in backend)
-5. UI updates correctly (archived tasks disappear)
-6. All error cases are handled gracefully
-7. Code follows project standards (naming, structure, patterns)
-
----
-
-## Next Tasks (After 471259)
-
-- **Task 471260:** Copy Tasks - Similar pattern with PUT `/api/tasks/copy`
-- **Task 471261:** Unlink Tasks - Similar pattern with PUT `/api/tasks/unlink`
-
-These will follow the same architectural pattern established in this task.
-
----
-
-**Last Updated:** 2025-11-07  
-**Status:** Volatile - Specific to Task 471259  
-**Usage:** Include when working on Task 471259 only
+**Last Updated:** 2025-11-10
+**Status:** Completed
+**Usage:** Historical context for Task 471259
