@@ -1,211 +1,59 @@
-# Project Environment - mfg-asset-strategy
+# Environment Quick Reference · mfg-asset-strategy
 
-## Repository Information
+## Repo & Branching
+- **Repo:** `git@github.com:Georgia-Pacific/mfg-asset-strategy.git`
+- **Base branch actual:** `wip/sprint-7`
+- **Convención:** `feature/<task>-<descripcion>` (frontend) · `feature/<task>-api-<descripcion>` (backend)
+- **Clones locales:**
+  - Windows: `C:\Users\alexr24\Documents\LPL\ASAP\mfg-asset-strategy\`
+  - WSL: `/mnt/c/Users/alexr24/Documents/LPL/ASAP/mfg-asset-strategy/`
 
-### Repository Details
-- **Repository Name:** `mfg-asset-strategy`
-- **Repository full Name ssl:** `git@github.com:Georgia-Pacific/mfg-asset-strategy.git`
-- **Primary Branch:** `main`
-- **Development Branch:** `wip/sprint-7`
-- **GitHub:** (Company private repository)
+## Runtime URLs
+| Contexto | URL | Nota |
+|----------|-----|------|
+| API local HTTPS | https://localhost:56802 | Swagger en `/swagger` |
+| API local HTTP | http://localhost:56803 | Alternativo |
+| Frontend dev server | http://localhost:3000 | `npm run dev` |
+| pgAdmin | http://localhost:5050 | Admin DB (Docker) |
 
-### Local Paths
-- **Windows:** `C:\Users\alexr24\Documents\LPL\ASAP\mfg-asset-strategy\`
-- **WSL (optional):** `/mnt/c/Users/alexr24/Documents/LPL/ASAP/mfg-asset-strategy/`
+## Configuration Files
+- Backend: `src/mfg-asset-strategy-api/MFG.ASAP.WebApi/appsettings.json` + `appsettings.Development.json` (local, secreto).
+- Frontend envs: `src/mfg-asset-strategy-ui/environments/*.env` (`local`, `dev`, `qa`, `uat`, `prod`, `shared`).
+- Variable crítica: `API_BASE_URL`.
 
----
-
-## Current Sprint and Branches
-
-### Active Sprint
-- **Sprint:** Sprint 6/7 - Reliability Page Development
-- **Base Branch:** `wip/sprint-7`
-
-### Feature Branches Pattern
-- **Format:** `feature/[task-number]-[description]`
-- **Example:** `feature/471259-archive-tasks-ui`
-
-### Backend API Branches
-- **Format:** `feature/[task-number]-api-[description]`
-- **Example:** `feature/478150-api-task-table`
-
----
-
-## Development URLs
-
-### Backend (.NET API)
-
-| Environment | URL | Notes |
-|-------------|-----|-------|
-| Local HTTPS | https://localhost:56802 | Primary development URL |
-| Local HTTP | http://localhost:56803 | Alternative (not typically used) |
-| Swagger | https://localhost:56802/swagger | API documentation |
-| Base API Path | https://localhost:56802/API | All endpoints under /API |
-
-### Frontend (React)
-
-| Environment | URL | Notes |
-|-------------|-----|-------|
-| Dev Server | http://localhost:3000 | Hot reload enabled |
-| Build Output | `dist/` directory | Webpack output |
-
----
-
-## Database Configuration
-
-### PostgreSQL
-
-#### Remote Database (Team Shared)
-- **Host:** (AWS RDS - configured per environment)
-- **Purpose:** Primary development and testing database
-- **Access:** Via connection string in `appsettings.Development.json`
-
-#### Local Database (Docker)
-- **Host:** `localhost`
-- **Port:** `5432`
-- **Container:** Defined in `docker-compose.yml`
-- **Purpose:** Local development/testing when offline or for isolated work
-
-#### pgAdmin (Web UI)
-- **URL:** http://localhost:5050
-- **Purpose:** Database administration and query tool
-- **Container:** Runs alongside PostgreSQL in Docker
-
----
-
-## Environment Files
-
-### Backend Configuration
-- **Primary:** `appsettings.json` (checked into git)
-- **Development:** `appsettings.Development.json` (local only, NOT in git)
-- **Location:** `src/mfg-asset-strategy-api/MFG.ASAP.WebApi/`
-
-**Note:** `appsettings.Development.json` contains local database connection strings and secrets
-
-### Frontend Configuration
-- **Location:** `src/mfg-asset-strategy-ui/environments/`
-- **Files:**
-  - `local.env` - Local development
-  - `dev.env` - DEV environment
-  - `qa.env` - QA environment
-  - `uat.env` - UAT environment
-  - `prod.env` - Production environment
-  - `shared.env` - Shared variables
-
-**Key Variables:**
-- `API_BASE_URL` - Backend API base URL
-
----
-
-## NPM Scripts (Frontend)
-
-### Development
+## Command Deck
+**Frontend (npm)**
 ```bash
-npm run dev          # Start dev server
-npm start            # Alias for dev
+npm run dev         # Hot reload
+npm run build[:env] # build, build:local/dev/qa/uat/prod
+npm run serve       # servir dist/
 ```
 
-### Build
+**Backend (.NET)**
 ```bash
-npm run build        # Production build
-npm run build:local  # Local build
-npm run build:dev    # DEV environment build
-npm run build:qa     # QA environment build
-npm run build:uat    # UAT environment build
-npm run build:prod   # Production build
+dotnet build
+dotnet run
+dotnet watch run
 ```
 
-### Serve
+**Docker servicios locales**
 ```bash
-npm run serve        # Serve built files (from dist/)
+docker-compose up -d
+docker-compose down
+docker-compose logs -f
 ```
+> Migraciones se gestionan con Flyway (`db/mfg-asset-strategy/asap/public/`).
 
----
+## Data & Auth
+- PostgreSQL: RDS compartido (por defecto) o contenedor local `localhost:5432`.
+- Tokens JWT en `localStorage` (`id_token`, `access_token`, `refresh_token`).
+- `makeAuthenticatedRequest()` adjunta automáticamente `Authorization: Bearer {id_token}`.
 
-## .NET Commands (Backend)
+## Deployment & Ops
+- Backend: AWS Lambda (Terraform) · Frontend: CloudFront + S3.
+- CI/CD: GitHub Actions (`.github/workflows/`).
+- Contacto clave backend/DB: **Thomas**.
 
-### Build and Run
-```bash
-dotnet build                          # Build solution
-dotnet run                            # Run API
-dotnet watch run                      # Run with hot reload
-```
+> Para topologías completas y credenciales, revisa `docs/environment/README.md` o el espacio interno de Infra.
 
-### Database Migrations
-```bash
-# Migrations are handled via Flyway, not EF Core migrations
-# See db/mfg-asset-strategy/asap/public/ for SQL scripts
-```
-
----
-
-## Docker Compose (Local)
-
-### Services
-- **PostgreSQL:** Database server
-- **pgAdmin:** Database administration UI
-
-### Commands
-```bash
-docker-compose up -d           # Start services
-docker-compose down            # Stop services
-docker-compose logs -f         # View logs
-```
-
-**Note:** `docker-compose.yml` location (check project root or `db/` directory)
-
----
-
-## API Base URLs by Environment
-
-| Environment | API Base URL | Notes |
-|-------------|--------------|-------|
-| Local | https://localhost:56802 | Development machine |
-| DEV | (AWS URL) | Development environment |
-| QA | (AWS URL) | Quality assurance |
-| UAT | (AWS URL) | User acceptance testing |
-| PROD | (AWS URL) | Production |
-
-**Configuration:** Set via `API_BASE_URL` environment variable in frontend
-
----
-
-## Authentication Configuration
-
-### JWT Tokens
-- **Storage:** localStorage
-- **Key Names:**
-  - `id_token` - Used for API authentication
-  - `access_token` - OAuth/OIDC access token
-  - `refresh_token` - Token refresh (if applicable)
-
-### Token Usage
-- **Authorization Header:** `Bearer {id_token}`
-- **Handled by:** `makeAuthenticatedRequest()` in `src/utils/api.ts`
-
----
-
-## Deployment
-
-### Backend
-- **Platform:** AWS Lambda
-- **Provisioning:** Terraform (see `terraform/` directory)
-- **CI/CD:** GitHub Actions
-
-### Frontend
-- **Platform:** AWS CloudFront + S3
-- **Provisioning:** Terraform
-- **CI/CD:** GitHub Actions
-
----
-
-## Key Project Contacts (Mentioned in Logs)
-
-- **Thomas:** Team member (backend/database work)
-- **Reference:** Can verify data model decisions and backend logic
-
----
-
-**Last Updated:** 2025-11-07  
-**Status:** Semi-Stable - Changes when project infrastructure changes  
-**Usage:** Include when working on mfg-asset-strategy project (any task)
+**Actualizado:** 2025-11-07 · Mantén esta tarjeta abierta durante la puesta en marcha.
