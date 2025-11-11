@@ -9,48 +9,29 @@ Alex uses a **"Windows-First"** development approach with repository clones in t
 ## Base Directory Structure
 
 ### Standard Location
-- **Base Path:** `C:\Users\alexr24\Documents\LPL\`
-- **Project Pattern:** `C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]\`
-- **Access from WSL (optional):** `/mnt/c/Users/alexr24/Documents/LPL/[projectFolder]/[repo-name]/`
+
+| Elemento | Ruta |
+|----------|------|
+| Base Path | `C:\Users\alexr24\Documents\LPL\` |
+| Patrón de proyecto | `C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]\` |
+| Acceso WSL (opcional) | `/mnt/c/Users/alexr24/Documents/LPL/[projectFolder]/[repo-name]/` |
 
 ### Single Clone Strategy
-- One repository clone per project in Windows filesystem
-- Rationale: Single source of truth, avoids sync issues between multiple clones
-- All development happens in Windows; Linux containers used only for testing
+- Un repo por proyecto en Windows como fuente única.
+- Evita problemas de sincronización entre clones.
+- Linux/WSL solo para pruebas y compatibilidad.
 
 ---
 
 ## Development Tools
 
-### Company Standards
-- **Backend Language:** C# with .NET
-- **Frontend Stack:** React with TypeScript
-- **Version Control:** Git
-- These are company standards and do NOT change between projects
-
-### IDEs and Editors
-- **Backend (C# / .NET):** Visual Studio 2022 (Windows)
-  - Terminal: PowerShell (integrated)
-  - Used for: Building, debugging, running .NET projects
-  - Opens backend project directories
-  
-- **Frontend (React / TypeScript):** VS Code (Windows)
-  - Terminal: PowerShell (integrated)
-  - Used for: Editing React/TypeScript code, running npm commands
-  - Opens frontend project directories
-
-### Version Control
-- **Git:** Can be executed from Windows (PowerShell/Git Bash) or WSL (Ubuntu)
-  - WSL is **optional** - use it if you prefer consistent behavior and avoid line-ending issues
-  - Windows git works fine for most operations
-  - Choose based on personal preference
-
-### Database Client
-- **DBeaver:** For queries and database verification
-- **Note:** Specific database system (PostgreSQL, SQL Server, etc.) varies by project
-
-### Containers
-- **Docker Desktop:** For local containers and testing
+| Category | Tooling | Usage Notes |
+|----------|---------|-------------|
+| **Company stack** | C# + .NET backend · React + TypeScript frontend | Base combo for todos los proyectos |
+| **IDEs** | Visual Studio 2022 (backend) · VS Code (frontend) | Ejecutar terminal integrada PowerShell |
+| **Version control** | Git (PowerShell o Git Bash). WSL opcional | Usa la ruta Windows como fuente única; WSL solo para compatibilidad |
+| **Database** | DBeaver | Cliente genérico, apunta a la base definida por proyecto |
+| **Containers** | Docker Desktop | Levantar ambientes locales y validar paridad Linux |
 
 ---
 
@@ -58,7 +39,7 @@ Alex uses a **"Windows-First"** development approach with repository clones in t
 
 ### Backend Development (.NET)
 
-**In Visual Studio 2022 (PowerShell terminal):**
+**En Visual Studio 2022 (PowerShell integrada):**
 ```powershell
 # Navigate to backend (example path)
 cd C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]\[backend-directory]\
@@ -72,26 +53,13 @@ dotnet run
 # Typical backend runs on HTTPS (port varies by project)
 ```
 
-**For Git operations (Windows or WSL):**
-```bash
-# Windows PowerShell:
-cd C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]
-git status
-git add [files]
-git commit -m "fix: your message"
-git push origin [branch-name]
-
-# OR WSL (optional):
-cd /mnt/c/Users/alexr24/Documents/LPL/[projectFolder]/[repo-name]
-git status
-# ... same git commands
-```
+Consulta el flujo Git consolidado más abajo.
 
 ---
 
 ### Frontend Development (React)
 
-**In VS Code (PowerShell terminal):**
+**En VS Code (PowerShell integrada):**
 ```powershell
 # Navigate to frontend (example path)
 cd C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]\[frontend-directory]\
@@ -108,47 +76,28 @@ npm start
 npm run build
 ```
 
-**For Git operations (Windows or WSL):**
-```bash
-# Same pattern as backend
-cd C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]
-git status
-git add [files]
-git commit -m "feat: your message"
-git push origin [branch-name]
-```
+Consulta el flujo Git consolidado más abajo.
+
+---
+
+### Git Workflow (Windows base, WSL opcional)
+
+| Acción | Comando | Notas |
+|--------|---------|-------|
+| Ir al repo | `cd C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]` | En WSL usa `/mnt/c/...` |
+| Revisar estado | `git status` | Igual en PowerShell o WSL |
+| Publicar cambios | `git add <files>` → `git commit -m "<type>: mensaje"` → `git push origin <branch>` | Mantén un solo origen (Windows) |
+| Sincronizar main | `git fetch origin` → `git checkout main` → `git pull origin main` | Ejecuta antes de crear ramas |
+| Crear rama | `git checkout -b feature/<ticket>-descripcion` | Mismo patrón para frontend/backend |
+| Actualizar rama | `git checkout feature/<ticket>` → `git pull origin feature/<ticket>` | Resuelve conflictos en Windows |
+
+WSL solo replica rutas (`/mnt/c/...`). Úsalo cuando necesites herramientas Linux o normalizar finales de línea.
 
 ---
 
 ## Branch Management
 
-### Typical Branch Workflow
-
-**Create new feature branch:**
-```bash
-cd C:\Users\alexr24\Documents\LPL\[projectFolder]\[repo-name]
-git fetch origin
-git checkout main
-git pull origin main
-git checkout -b feature/task-number-description
-```
-
-**Switch branches:**
-```bash
-git fetch origin
-git checkout feature/existing-branch
-git pull origin feature/existing-branch
-```
-
-**Sync with main:**
-```bash
-git checkout main
-git pull origin main
-git checkout feature/your-branch
-git merge main
-# Resolve conflicts if any
-git push origin feature/your-branch
-```
+El flujo completo vive en la tabla anterior para evitar duplicidad con guías de proyecto.
 
 ---
 
@@ -170,15 +119,9 @@ These are common patterns, but **specific ports vary by project**:
 
 ---
 
-## Shared Interaction Standards
+## Interaction Reminders
 
-| Topic | Workflow Expectation | Source |
-|-------|----------------------|--------|
-| **Language split** | Conversaciones en español; menús/comandos en inglés | Developer Profile · Interaction Quick Reference · "Language split" |
-| **Command cadence** | Ejecutar un comando a la vez y esperar la salida antes de continuar | IA Interaction Rules · Operational Rule 9 |
-| **Complete files** | Entregar archivos completos para copiar y pegar | IA Interaction Rules · Operational Rule 2 |
-| **Verification** | Confirmar resultados críticos con fuentes oficiales | Developer Profile · Interaction Quick Reference · "Verification mindset" |
-| **Tone & humor** | Directo, colegial, sarcasmo afilado bienvenido | IA Interaction Rules · Operational Rule 3 |
+Las normas de conversación viven en `Governance/IA_INTERACTION_RULES.md`. Usa este documento solo para logística del entorno.
 
 ---
 
@@ -198,4 +141,4 @@ These are common patterns, but **specific ports vary by project**:
 **Last Updated:** 2025-11-07  
 **Status:** Stable - Changes only when personal environment setup changes  
 **Usage:** Include in ALL AI sessions as base environment context  
-**Note:** Project-specific details (repo name, structure, URLs) should be in PROJECT_ENVIRONMENT.md
+**Note:** Project-specific details (repo name, structure, URLs) should be in `Project-Related/PROJECT_ENVIRONMENT.md`.

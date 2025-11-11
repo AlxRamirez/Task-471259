@@ -23,51 +23,35 @@
 - **Business-aware:** Values understanding the "why" behind technical decisions
 - **Healthy skepticism:** Prefers to verify critical information from official sources
 
-### Interaction Quick Reference
+### Interaction & Learning Matrix
 
-| Topic | Alex's Preference | Canonical Rule / Doc |
-|-------|-------------------|----------------------|
-| **Language split** | Spanish conversation, English UI terminology | IA Interaction Rules · Operational Rule 1 |
-| **Tone** | Direct, collegial, sharp sarcasm welcome | IA Interaction Rules · Operational Rule 3 |
-| **Emojis** | Never use | IA Interaction Rules · Operational Rule 3 |
-| **Complete files** | Provide whole-file replacements | IA Interaction Rules · Operational Rule 2 |
-| **Step-by-step flow** | Guide one command at a time, wait for output | IA Interaction Rules · Operational Rule 9 |
-| **Verification mindset** | Encourage double-checking critical info | IA Interaction Rules · Operational Rule 4 |
-| **Analogies** | Ask before offering | IA Interaction Rules · Operational Rule 5 |
+| Topic | Preference | Canonical Reference |
+|-------|------------|---------------------|
+| **Language** | Conversación en español; comandos/UI en inglés | IA Interaction Rules · Regla 1 |
+| **Tone** | Directo, colegial, sarcasmo seco ok | IA Interaction Rules · Regla 3 |
+| **Emojis** | Nunca usar | IA Interaction Rules · Regla 3 |
+| **Archivos** | Entregar reemplazos completos | IA Interaction Rules · Regla 2 |
+| **Cadencia** | Un comando a la vez, esperar salida | IA Interaction Rules · Regla 9 |
+| **Verificación** | Recordar contrastar datos críticos | IA Interaction Rules · Regla 4 |
+| **Analogías** | Preguntar antes de usarlas | IA Interaction Rules · Regla 5 |
+| **Aprendizaje** | Explicar el "por qué" y conectar con Java/HTML/CSS | IA Interaction Rules · Reglas pedagógicas |
 
 ### Learning Style
-- **Prefers understanding over memorization:** Wants to know WHY, not just HOW
-- **Connects to previous experience:** Helps to relate new concepts to Java/HTML/CSS background
-- **Step-by-step when learning:** For new concepts, prefers guided execution
-- **Complete files:** Prefers full file replacements over snippets or search-and-replace
+- Quiere entender el motivo detrás de cada paso.
+- Pide guías paso a paso para conceptos nuevos.
+- Prefiere referencias cruzadas a su experiencia previa (Java/HTML/CSS).
+- Aprecia confirmaciones explícitas de que se entregan archivos completos.
 
 ---
 
 ## Personal Context
 
-### Demographics
-- **Age:** 51 years old
-- **Family:** Married, no children
-- **Pets:** Dogs
-
-### Interests and Hobbies
-- **Music:** Learning guitar and harmonica
-- **Games:** Studies and plays chess
-- **Languages:** Learning Italian and Portuguese
-- **Science:** Interested in general science, particularly astronomy
-
----
-
-## Key Preferences Summary
-
-| Aspect | Preference |
-|--------|-----------|
-| **File Format** | Complete files, not snippets |
-| **Explanations** | Business + technical "why" |
-| **Tone** | Direct, professional, collegial |
-| **Emojis** | Never use (obvious AI indicator) |
-| **Step-by-step** | Yes, for new concepts |
-| **Verification** | Encourage double-checking critical info |
+| Aspecto | Detalle |
+|---------|---------|
+| **Edad** | 51 años |
+| **Familia** | Casado, sin hijos |
+| **Mascotas** | Perros |
+| **Intereses** | Música (guitarra/harmónica), ajedrez, italiano/portugués, astronomía |
 
 ---
 
